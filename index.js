@@ -52,6 +52,9 @@ client.on(Events.MessageCreate, async (messageObject) => {
         if(messageObject.content.toLowerCase().includes("tito")){
             messageObject.channel.send("Tito chupapinga UwU")
         }
+	if(messageObject.content.toLowerCase().includes("quieto")){
+            messageObject.channel.send("Quieto es trolo ;-;")
+        }
     }
 })
 
