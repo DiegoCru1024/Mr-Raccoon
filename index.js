@@ -1,9 +1,13 @@
 const {Client, GatewayIntentBits, Collection, Events, EmbedBuilder} = require("discord.js")
 const {commandLoader, loadCommands} = require("./commandLoader")
+const { DisTube } = require('distube')
+const { SpotifyPlugin } = require('@distube/spotify')
 require("dotenv/config")
 
 var express = require("express")
+const play = require("./commands/play")
 var app = express()
+
 
 app.set(`port`, (process.env.PORT || 5000))
 
@@ -19,9 +23,22 @@ const discordClient = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.MessageContent
     ]
 })
+
+discordClient.distube = new DisTube(discordClient, {
+    leaveOnStop: false,
+    emitNewSongOnly: true,
+    emitAddSongWhenCreatingQueue: false,
+    emitAddListWhenCreatingQueue: false,
+    plugins: [
+      new SpotifyPlugin({
+        emitEventsAfterFetching: true
+      }),
+    ]
+  })
 
 discordClient.once(Events.ClientReady, () => {
     console.log(`${discordClient.user.username} esta operativo...`)
@@ -30,7 +47,7 @@ discordClient.once(Events.ClientReady, () => {
 
 discordClient.on(Events.InteractionCreate, async (interactionEvent) => {
 	if (!interactionEvent.isChatInputCommand()) return;
-    
+      
 	const command = interactionEvent.client.commands.get(interactionEvent.commandName);
 
 	try {
@@ -59,4 +76,10 @@ discordClient.on(Events.GuildMemberAdd, (guildMemberAddEvent) => {
     guildMemberAddEvent.roles.add(newRole)
 })
 
+discordClient.distube.on("playSong", (queue, song) => {
+    song = queue.songs[0]
+    channel = discordClient.channels.cache.get("827673676857212948")
+    channel.send(`**Reproduciendo:** ${song.name} \`(${song.formattedDuration})\``)
+})
 discordClient.login(process.env.botToken)
+
