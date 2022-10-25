@@ -2,6 +2,18 @@ const {Client, GatewayIntentBits, Collection, Events, EmbedBuilder} = require("d
 const {commandLoader, loadCommands} = require("./commandLoader")
 require("dotenv/config")
 
+var express = require("express")
+var app = express()
+
+app.set(`port`, (process.env.PORT || 5000))
+
+app.get(`/`, function (request, response){
+    var result = "[Express] Aplicación en ejecución."
+    response.send(result)
+}).listen(app.get(`port`), function(){
+    console.log("[Express] Aplicación en ejecución, servidor alojado en el puerto: " + app.get("port"))
+})
+
 const discordClient = new Client({
     intents: [
         GatewayIntentBits.Guilds,
