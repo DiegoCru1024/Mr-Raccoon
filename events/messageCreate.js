@@ -7,9 +7,8 @@ module.exports = {
     async execute(message) {
         try {
             if (message.author.id === message.client.application.id) return
+
             await verifyUser(message.client, message.guild.id, message.author.id)
-
-
         } catch (error) {
             console.error('Error al manejar el evento messageCreate:', error)
         }
