@@ -20,7 +20,6 @@ const discordClient = new Client({
     ]
 })
 
-
 databaseConnect().then(() => {
     loadCommands(discordClient)
     loadEvents(discordClient)
