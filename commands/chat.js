@@ -39,7 +39,7 @@ module.exports = {
             await interaction.editReply(modelResponse);
         } catch (error) {
             console.error('Error al procesar el comando "chat":', error);
-            return interaction.reply('Ocurrió un error al procesar el comando.');
+            return interaction.editReply('Ocurrió un error al procesar el comando.');
         }
     },
 };
