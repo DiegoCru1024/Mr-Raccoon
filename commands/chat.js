@@ -1,6 +1,7 @@
 const {SlashCommandBuilder} = require('discord.js');
 const {guildUserModel} = require("../models/guildUserSchema");
 const {GoogleGenerativeAI} = require("@google/generative-ai");
+const {response} = require("express");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 const model = genAI.getGenerativeModel({model: "gemini-pro"});
@@ -38,8 +39,15 @@ module.exports = {
 
             await interaction.editReply(modelResponse);
         } catch (error) {
+            const blockReason = error.response.promptFeedback.blockReason
+
             console.error('Error al procesar el comando "chat":', error);
-            return interaction.editReply('Ocurrió un error al procesar el comando.');
+
+            if (blockReason) {
+                return interaction.editReply(`Tu mensaje no se envio por la siguiente razon: ${blockReason}`);
+            } else {
+                return interaction.editReply(`Hubo un error al procesar el mensaje.`);
+            }
         }
     },
 };
