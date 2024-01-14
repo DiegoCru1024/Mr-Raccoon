@@ -7,6 +7,7 @@ const guildUserSchema = new mongoose.Schema({
     experience: {type: Number},
     currency: {type: Number},
     lastDaily: {type: Date},
+    chatHistory: {type: Array}
 })
 
 const guildUserModel = mongoose.model("guildUser", guildUserSchema)
