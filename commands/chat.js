@@ -49,7 +49,7 @@ async function sendMessage(msg, chatHistory) {
     const chat = model.startChat({
         history: chatHistory || [],
         generationConfig: {
-            maxOutputTokens: 512,
+            maxOutputTokens: 500,
         }
     })
 
