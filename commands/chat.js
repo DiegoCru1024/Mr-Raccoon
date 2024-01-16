@@ -39,15 +39,8 @@ module.exports = {
 
             await interaction.editReply(modelResponse);
         } catch (error) {
-            const blockReason = error.response.promptFeedback.blockReason
-
             console.error('Error al procesar el comando "chat":', error);
-
-            if (blockReason) {
-                return interaction.editReply(`Tu mensaje no se envio por la siguiente razon: ${blockReason}`);
-            } else {
-                return interaction.editReply(`Hubo un error al procesar el mensaje.`);
-            }
+            return interaction.editReply(`No puedo responder a esta pregunta.`);
         }
     },
 };
